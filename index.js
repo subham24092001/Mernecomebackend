@@ -1,3 +1,5 @@
+const dotenv = require('dotenv')
+dotenv.config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -7,12 +9,14 @@ let jwtkey = 'e-comm'
 const cookieParser = require('cookie-parser');
 const EmployeeModel = require("./models/Employee.jsx");
 
+const port = 3001 || process.env.BASE_URL 
+
 const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(cookieParser());
 
-mongoose.connect("mongodb+srv://singhsubham62810:SGkh19mEbQXICGLo@cluster0.dvq8cjt.mongodb.net/?retryWrites=true&w=majority");
+mongoose.connect(process.env.MONGODB_URL);
 
 app.post("/login", async (req, res) => {
   if(req.body.email && req.body.password){
@@ -56,6 +60,6 @@ app.post("/register", async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
+app.listen(port, () => {
   console.log("Server is running on port 3001");
 });
